@@ -13,8 +13,6 @@ function Close(){
             if(cell.x==this.elemts[i].x && cell.y==this.elemts[i].y){
                 con= true;
                 break;
-            }else{
-                con=false;
             }
         }
 

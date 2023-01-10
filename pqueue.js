@@ -1,68 +1,71 @@
-function PQueue(cell){
-	
-	this.cell=cell;
-	this.elements=[];
+function PQueue(cell) {
 
-	this.index=0;
+	this.cell = cell;
+	this.elements = [];
+
+	this.index = 0;
 
 
-	this.Pqueue=function(){
-	
+	this.Pqueue = function () {
+
 	}
 
-
-	this.pPush=function(cell){
-		this.elements.push(cell);
+	this.headpPush = function (heap, cell) {
+		heap.push(cell)
+		this._siftdown(heap, 0, heap.length - 1)
 	}
 
-	this.pPop=function(){
-		var tempElements=this.selection();
-
-		if(tempElements.length-1==0){
-			return tempElements.pop();
-		}else{
-
-			if(this.isEmpty()){
-				return -1;
-			}else{
-				return tempElements.pop();
+	this._siftdown = function (heap, startpos, pos) {
+		let newitem = heap[pos]
+		while (pos > startpos) {
+			parentpos = (pos - 1) >> 1
+			parent = heap[parentpos]
+			if (newitem < parent) {
+				heap[pos] = parent
+				pos = parentpos
+				continue
 			}
+			break
 		}
-		
-		
-		
+		heap[pos] = newitem
 	}
 
-	this.isEmpty=function(){
-		if (this.elements.length == 0){
+	this.heappop = function (heap) {
+		lastelt = heap.pop()
+		if (heap,length>0) {
+			returnitem = heap[0]
+			heap[0] = lastelt
+			this._siftup(heap, 0)
+			return returnitem
+		}
+		return lastelt
+	}
+
+	this._siftup=function(heap, pos){
+		endpos = heap.length
+		startpos = pos
+		newitem = heap[pos]
+		childpos = 2 * pos + 1
+		while (childpos < endpos) {
+			rightpos = childpos + 1
+			if (rightpos < endpos && !heap[childpos] < heap[rightpos]) {
+				childpos = rightpos
+			}
+			heap[pos] = heap[childpos]
+			pos = childpos
+			childpos = 2 * pos + 1
+
+		}
+		heap[pos] = newitem
+		this._siftdown(heap, startpos, pos)
+	}
+	
+
+	this.isEmpty = function () {
+		if (this.elements.length == 0) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
-	}
-
-	this.isContain=function(cell){
-		for(var i=0;i<this.elements.length;i++){
-			if(cell.x==this.elements[i].x && cell.y==this.elements[i].y){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	this.selection=function(){
-		var temp=new Cell();
-		for(var i=0;i<this.elements.length;i++){
-			var mip=i;
-			for(var j=j+1;j<this.elements.length;j++){
-				if(elements[j].f < elements[mip].f){
-					mip=j;
-				}
-			}
-			temp=this.elements[i];
-			this.elements[i]=this.elements[mip];
-			this.elements[mip]=temp;
-		}
-		return this.elements;
 	}
 }
