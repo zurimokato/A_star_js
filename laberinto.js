@@ -1,31 +1,25 @@
-function Laberinto(cells, walls, start, goal) {
-	this.cells = cells;
-	this.walls = walls;
-	this.tam = 63;
-	this.grid_height = 8;
-	this.grid_width = 8;
-	this.start = start;
-	this.goal = goal;
-	this.open = [];
-	this.heapQueue = new PQueue();
-	this.closed = new Close();
+class Laberinto {
 
 
-	this.Laberinto = function (cells, walls) {
+	constructor(cells, walls, start, goal) {
 		this.cells = cells;
 		this.walls = walls;
 		this.tam = 63;
 		this.grid_height = 8;
 		this.grid_width = 8;
-
-
+		this.start = start;
+		this.goal = goal;
+		this.open = [];
+		this.heapQueue = new PQueue();
+		this.closed = new Close();
 	}
-	this.dibujar = function () {
+	
+	dibujar() {
 
 		for (const cell of this.cells) {
 			cell.dibujar();
 		}
-		for (const wall of walls) {
+		for (const wall of this.walls) {
 			wall.dibujar();
 		}
 
@@ -34,7 +28,7 @@ function Laberinto(cells, walls, start, goal) {
 		rect(this.goal.x * this.tam, this.goal.y * this.tam, this.tam, this.tam);
 
 	}
-	this.getAdjacentCells = function (cell) {
+	getAdjacentCells(cell) {
 		let adjCells = [];
 		let cellC;
 
@@ -74,29 +68,29 @@ function Laberinto(cells, walls, start, goal) {
 
 	}
 
-	this.get_cell = function (x, y) {
+	get_cell(x, y) {
 
 		return this.cells[x * this.grid_height + y];
 
 	}
 
-	this.get_heuristic = function (cell) {
+	get_heuristic(cell) {
 
 		return 2 * (abs(cell.x - this.goal.x) + abs(cell.y - this.goal.y));
 	}
 
-	this.getPath=function(){
+	getPath() {
 		let path = [];
 		let cell = this.goal;
-        while (cell.parent != this.start){
-            cell = cell.parent
-            path.push(cell);
+		while (cell.parent != this.start) {
+			cell = cell.parent
+			path.push(cell);
 		}
 		return path;
 	}
 
 
-	this.a_star = function () {
+	a_star() {
 		let path = [];
 		let cont = 0;
 		this.heapQueue.headpPush(this.open, this.start)
@@ -106,43 +100,43 @@ function Laberinto(cells, walls, start, goal) {
 			this.closed.add(temp);
 
 			if (temp.x == this.goal.x && temp.y == this.goal.x) {
-				this.goal.parent=temp.parent;
-				path=this.getPath()
+				this.goal.parent = temp.parent;
+				path = this.getPath()
 				break;
 			} else {
 				let adjs = this.getAdjacentCells(temp);
 				for (const adj of adjs) {
 					if (adj.reachable && !this.closed.isContain(adj)) {
-						if (this.open.find(cell=>cell.x==adj.x && adj.y==cell.y)) {
+						if (this.open.find(cell => cell.x == adj.x && adj.y == cell.y)) {
 							if (adj.g > temp.g + 10) {
 
 								this.updateCell(adj, temp);
-								
+
 							}
-							
+
 						} else {
 							this.updateCell(adj, temp);
 							cont++;
-							this.heapQueue.headpPush(this.open,adj);
+							this.heapQueue.headpPush(this.open, adj);
 						}
 					}
 				}
 			}
-			
+
 		}
 
 		return path.reverse();
 	}
 
-	this.updateCell = function (adj, cell) {
-		
+	updateCell(adj, cell) {
+
 		adj.h = this.get_heuristic(adj);
 		adj.parent = cell;
 		adj.f = adj.h;
 
 	}
 
-	this.compare = function (cell1, cell2) {
+	compare(cell1, cell2) {
 		if (cell1.f < cell2.f) {
 			return -1
 		}
@@ -154,8 +148,6 @@ function Laberinto(cells, walls, start, goal) {
 		}
 		return 0;
 	}
-
-
 
 }
 

@@ -1,25 +1,20 @@
-function PQueue(cell) {
-
-	this.cell = cell;
-	this.elements = [];
-
-	this.index = 0;
-
-
-	this.Pqueue = function () {
-
+class PQueue {
+	constructor(cell) {
+		this.cell = cell;
+		this.elements = [];
+		this.index = 0;
 	}
 
-	this.headpPush = function (heap, cell) {
+	headpPush(heap, cell) {
 		heap.push(cell)
 		this._siftdown(heap, 0, heap.length - 1)
 	}
 
-	this._siftdown = function (heap, startpos, pos) {
+	_siftdown(heap, startpos, pos) {
 		let newitem = heap[pos]
 		while (pos > startpos) {
-			parentpos = (pos - 1) >> 1
-			parent = heap[parentpos]
+			let parentpos = (pos - 1) >> 1
+			let parent = heap[parentpos]
 			if (newitem < parent) {
 				heap[pos] = parent
 				pos = parentpos
@@ -30,9 +25,9 @@ function PQueue(cell) {
 		heap[pos] = newitem
 	}
 
-	this.heappop = function (heap) {
-		lastelt = heap.pop()
-		if (heap,length>0) {
+	heappop(heap) {
+		let lastelt = heap.pop()
+		if (heap, length > 0) {
 			returnitem = heap[0]
 			heap[0] = lastelt
 			this._siftup(heap, 0)
@@ -41,11 +36,11 @@ function PQueue(cell) {
 		return lastelt
 	}
 
-	this._siftup=function(heap, pos){
-		endpos = heap.length
-		startpos = pos
-		newitem = heap[pos]
-		childpos = 2 * pos + 1
+	_siftup(heap, pos) {
+		let endpos = heap.length
+		let startpos = pos
+		let newitem = heap[pos]
+		let childpos = 2 * pos + 1
 		while (childpos < endpos) {
 			rightpos = childpos + 1
 			if (rightpos < endpos && !heap[childpos] < heap[rightpos]) {
@@ -59,9 +54,9 @@ function PQueue(cell) {
 		heap[pos] = newitem
 		this._siftdown(heap, startpos, pos)
 	}
-	
 
-	this.isEmpty = function () {
+
+	isEmpty = function () {
 		if (this.elements.length == 0) {
 			return true;
 		} else {
